@@ -1,61 +1,57 @@
-from flask import Flask, render_template, request, jsonify, make_response, redirect
-
-app = Flask(__name__, template_folder='../templates')
-
-# --- APNA PASSWORD YAHAN SET KARO ---
-ADMIN_PASS = "admin123" 
-
-@app.route('/')
-def home():
-    # YAHAN HAI FIX: Agar login nahi hai, to Login Page par bhejo
-    if request.cookies.get('logged_in') != 'true':
-        return redirect('/login')
-    return render_template('index.html')
-
-@app.route('/login')
-def login_page():
-    # Agar pehle se login hai, to sidha Admin Panel dikhao (ya Tool)
-    if request.cookies.get('logged_in') == 'true':
-        return redirect('/admin')
-    return render_template('login.html')
-
-@app.route('/admin')
-def admin_panel():
-    if request.cookies.get('logged_in') != 'true':
-        return redirect('/login')
-    return render_template('admin.html')
-
-# --- API LOGIC ---
-
-@app.route('/api/login', methods=['POST'])
-def api_login():
-    data = request.json
-    if data.get('pass') == ADMIN_PASS:
-        resp = make_response(jsonify({"status": "success"}))
-        # 1 Din ke liye login save rahega
-        resp.set_cookie('logged_in', 'true', max_age=86400)
-        return resp
-    return jsonify({"status": "fail"}), 401
-
-@app.route('/api/generate', methods=['POST'])
-def api_generate():
-    if request.cookies.get('logged_in') != 'true':
-        return jsonify({"status": "error"}), 403
-    
-    import random, string
-    data = request.json
-    duration = data.get('duration', '1h')
-    
-    rand_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-    new_key = f"EXE-{rand_str}-{duration.upper()}"
-    
-    return jsonify({"status": "success", "key": new_key})
-
-@app.route('/api/logout')
-def logout():
-    resp = make_response(redirect('/login'))
-    resp.set_cookie('logged_in', '', expires=0)
-    return resp
-
-if __name__ == '__main__':
-    app.run(debug=True)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EXE BOT | All In One Tools</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;800&family=Montserrat:wght@400;500;600;700&display=swap');
+    :root {
+        --bg-primary: #0a0a0f; --bg-card: rgba(20, 20, 35, 0.9); --border: rgba(255, 255, 255, 0.1);
+        --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --accent-blue: #4facfe; --text-primary: #ffffff; --text-secondary: #b0b0d0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Poppins', sans-serif; min-height: 100vh; padding-bottom: 100px; }
+    .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; overflow: hidden; pointer-events: none; }
+    .bg-particle { position: absolute; background: var(--accent-blue); border-radius: 50%; animation: float 25s infinite linear; opacity: 0.08; }
+    @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-100px); } }
+    .container { max-width: 480px; margin: 0 auto; padding: 25px 20px; position: relative; z-index: 1; }
+    .brand-header { text-align: center; margin-bottom: 35px; padding-top: 10px; }
+    .brand-logo { font-family: 'Orbitron', sans-serif; font-size: 2.6rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+    .glass-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 26px; padding: 25px; margin-bottom: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+    .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border: none; border-radius: 18px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; color: white; margin-bottom: 15px; }
+    .btn-primary { background: var(--gradient-1); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: white; }
+    .bottom-nav { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; background: rgba(15, 15, 25, 0.9); border-radius: 60px; padding: 12px 20px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
+    .nav-item { color: white; font-size: 1.4rem; cursor: pointer; }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="container">
+        <div class="brand-header"><h1 class="brand-logo">EXE BOT</h1></div>
+        <div class="glass-card">
+            <h3 style="color:#4facfe; margin-bottom:20px;"><i class="fas fa-rocket"></i> TOOLS MENU</h3>
+            <a href="https://auth.garena.com/universal/oauth?all_platforms=1&response_type=code&client_id=100067&redirect_uri=https%3A%2F%2Fapi.ff.garena.co.id%2Fauth%2Fauth%2Fcallback_n&platform=3" target="_blank" class="btn btn-primary"><i class="fab fa-facebook-f"></i> LOGIN FACEBOOK</a>
+            <button class="btn btn-secondary"><i class="fas fa-fingerprint"></i> BIND TOOL</button>
+            <button class="btn btn-secondary"><i class="fas fa-trash-alt"></i> CANCEL GMAIL</button>
+        </div>
+        <div style="text-align:center; color:#888; font-size:0.8rem;">POWERED BY EXE BOT</div>
+    </div>
+    <div class="bottom-nav">
+        <div class="nav-item"><i class="fas fa-home"></i></div>
+        <div class="nav-item" onclick="window.location.href='/login'"><i class="fas fa-user-shield"></i></div>
+    </div>
+    <script>
+        const c = document.querySelector('.bg-animation');
+        for(let i=0; i<15; i++) {
+            const p = document.createElement('div'); p.className = 'bg-particle';
+            p.style.left = Math.random()*100+'%'; p.style.top = Math.random()*100+'%';
+            p.style.width = (Math.random()*60+20)+'px'; p.style.height = p.style.width;
+            p.style.animationDuration = (Math.random()*30+15)+'s'; c.appendChild(p);
+        }
+    </script>
+</body>
+</html>
