@@ -3,25 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXE LOGIN</title>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap');
-    :root { --bg-dark: #050507; --accent: #667eea; --glass: rgba(20, 20, 35, 0.8); }
-    body { background: var(--bg-dark); font-family: 'Poppins', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
-    .bg-animation { position: absolute; width: 100%; height: 100%; z-index: -1; }
-    .particle { position: absolute; background: var(--accent); border-radius: 50%; opacity: 0.1; animation: float 20s infinite linear; }
-    @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-100vh); } }
-    .login-card { background: var(--glass); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.1); padding: 50px 30px; border-radius: 24px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.7); animation: slideUp 0.6s ease-out; position: relative; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    .avatar-glow { width: 90px; height: 90px; background: #0a0a0f; border: 2px solid var(--accent); border-radius: 50%; margin: -95px auto 20px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); animation: pulse 2s infinite; }
-    .avatar-glow i { font-size: 2.5rem; color: #fff; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.6); } 100% { box-shadow: 0 0 0 15px rgba(102, 126, 234, 0); } }
-    .input-field { width: 100%; padding: 15px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; text-align: center; font-size: 1.1rem; margin-bottom: 20px; outline: none; letter-spacing: 2px; }
-    .login-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
-    .contact-btn { display: block; margin-top: 20px; color: #229ED9; text-decoration: none; font-size: 0.8rem; border: 1px solid #229ED9; padding: 10px; border-radius: 10px; }
-    .error-msg { color: #ff4757; margin-top: 15px; display: none; }
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>EXE SECURE LOGIN</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap');
+        :root { --bg-dark: #050507; --accent: #667eea; --glass: rgba(20, 20, 35, 0.8); }
+        body { background: var(--bg-dark); font-family: 'Poppins', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
+        
+        .bg-animation { position: absolute; width: 100%; height: 100%; z-index: -1; }
+        .particle { position: absolute; background: var(--accent); border-radius: 50%; opacity: 0.1; animation: float 20s infinite linear; }
+        @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-100vh); } }
+
+        .login-card {
+            background: var(--glass); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.1);
+            padding: 50px 30px; border-radius: 24px; width: 90%; max-width: 380px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7); animation: slideUp 0.6s ease-out; position: relative;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .avatar-glow {
+            width: 90px; height: 90px; background: #0a0a0f; border: 2px solid var(--accent); border-radius: 50%;
+            margin: -95px auto 20px auto; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); animation: pulse 2s infinite;
+        }
+        .avatar-glow i { font-size: 2.5rem; color: #fff; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.6); } 100% { box-shadow: 0 0 0 15px rgba(102, 126, 234, 0); } }
+
+        .input-field { width: 100%; padding: 15px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; text-align: center; font-size: 1.1rem; margin-bottom: 20px; outline: none; letter-spacing: 2px; }
+        .login-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
+        .contact-btn { display: block; margin-top: 20px; color: #229ED9; text-decoration: none; font-size: 0.8rem; border: 1px solid #229ED9; padding: 10px; border-radius: 10px; }
+        .error-msg { color: #ff4757; margin-top: 15px; display: none; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="bg-animation" id="bgAnim"></div>
@@ -29,13 +41,16 @@
         <div class="avatar-glow"><i class="fas fa-user-shield"></i></div>
         <h2 style="font-family:'Orbitron'; color:white; margin-bottom:5px;">EXE LOGIN</h2>
         <p style="color:#888; font-size:0.7rem; letter-spacing:2px; margin-bottom:25px;">SECURE ACCESS TERMINAL</p>
+        
         <form id="loginForm">
             <input type="password" id="accessKey" class="input-field" placeholder="••••••••" required>
             <button type="submit" class="login-btn" id="btnSubmit">UNLOCK PANEL</button>
             <div class="error-msg" id="errorMsg">INVALID KEY</div>
         </form>
+
         <a href="https://t.me/Brexxee" class="contact-btn"><i class="fab fa-telegram-plane"></i> GET KEY FROM OWNER</a>
     </div>
+
     <script>
         const bg = document.getElementById('bgAnim');
         for(let i=0; i<15; i++){
@@ -44,19 +59,27 @@
             p.style.width = (Math.random()*50+10)+'px'; p.style.height = p.style.width;
             p.style.animationDuration = (Math.random()*20+10)+'s'; bg.appendChild(p);
         }
+
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const key = document.getElementById('accessKey').value.trim();
             const btn = document.getElementById('btnSubmit');
             btn.innerHTML = 'CHECKING...';
+            
             fetch('/api/login', {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({pass: key})
-            }).then(res => res.json()).then(data => {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({pass: key})
+            })
+            .then(res => res.json())
+            .then(data => {
                 if(data.status === 'success') {
-                    btn.style.background = '#43e97b'; btn.innerHTML = 'GRANTED';
+                    btn.style.background = '#43e97b';
+                    btn.innerHTML = 'GRANTED';
                     setTimeout(() => window.location.href = '/admin', 500);
                 } else {
-                    btn.innerHTML = 'UNLOCK PANEL'; document.getElementById('errorMsg').style.display = 'block';
+                    btn.innerHTML = 'UNLOCK PANEL';
+                    document.getElementById('errorMsg').style.display = 'block';
                 }
             });
         });
